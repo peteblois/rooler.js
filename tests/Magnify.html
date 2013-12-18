@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Magnify</title>
+
+    <style>
+      html body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+    <link href='../rooler/rooler.css' rel='stylesheet' type='text/css'/>
+
+    <script src='../rooler/rooler.js' type='text/javascript'></script>
+
+    <script type='text/javascript'>
+      window.addEventListener('load', function() {
+        window.Rooler = {};
+
+        var img = document.getElementById('image');
+        var screenShot = rooler.ScreenShot.fromImage(img);
+        window.Rooler.screenShot = screenShot;
+
+        var magnifier = new rooler.Magnifier();
+        //magnifier.magnify();
+        /*
+        img.addEventListener('mousemove', function(e) {
+          var point = {
+            x: e.pageX,
+            y: e.pageY
+          };
+
+          magnifier.magnify(screenShot, 2, point);
+        }, false);
+        */
+      }, false);
+
+
+    </script>
+  </head>
+
+  <body>
+    <img src='picnik.png' id='image'/>
+  </body>
+</html>

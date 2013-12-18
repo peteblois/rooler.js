@@ -1,0 +1,91 @@
+﻿.roolerCrosshairs 
+{
+    width:200px; 
+    height:200px; 
+    position: absolute;
+    z-index: 1000;
+}
+
+.roolerVertical
+{
+    width:10px; 
+    height: 100%; 
+    left:50px; 
+    position: absolute;
+}
+
+.roolerVerticalBar 
+{
+    width:1px; 
+    height: 100%; 
+    background: red; 
+    position: absolute; 
+    left:5px
+}
+
+.roolerVerticalTop 
+{
+    width: 100%; 
+    height: 1px; 
+    background: red; 
+    top:0px; 
+    position:absolute;
+}
+
+.roolerVerticalBottom 
+{
+    width: 100%; 
+    height: 1px; 
+    background: red; 
+    bottom:0px; 
+    position:absolute;
+}
+
+.roolerHorizontal 
+{
+    width: 100%; 
+    height: 10px; 
+    top:50px; 
+    position:absolute;
+}
+
+.roolerHorizontalBar 
+{
+    width: 100%; 
+    height: 1px; 
+    background: red; 
+    top:5px; 
+    position:absolute;
+}
+
+.roolerHorizontalLeft 
+{
+    width:1px; 
+    height: 100%; 
+    background: red; 
+    position: absolute; 
+    left:0px;
+}
+
+.roolerHorizontalRight 
+{
+    width:1px; 
+    height: 100%; 
+    background: red; 
+    position: absolute; 
+    right:0px;
+}
+
+.roolerDimensions
+{
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: black;
+    color: White;
+    position: absolute;
+    font-size: .75em;
+    font-family: Courier New;
+    padding-left: 2px;
+    padding-top: 2px;
+}

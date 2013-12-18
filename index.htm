@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>rooler</title>
+    <style>
+      html body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font: .8em Arial, Helvetica
+      }
+      .header {
+        background: #F1F1F1;
+        border-bottom: 1px solid #D2D2D2;
+        -moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, .2);
+        -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, .2);
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, .2);
+        z-index: 1000;
+        height: 39px;
+        position: relative;
+        text-shadow: #FFF 0 1px;
+      }
+      .navigation {
+        border-left: 1px solid #D2D2D2;
+        font-size: 1.1em;
+      }
+      .item {
+        display: inline-block;
+        height: 27px;
+        width: 100px;
+        padding-top: 12px;
+        text-align: center;
+        position: relative;
+      }
+
+      a {
+        text-decoration: none;
+        color: #666;
+        height: 100%;
+        display: inline-block;
+        position: relative;
+        margin-left: -4px;
+        margin-bottom: -1px;
+        border-right: 1px solid #D2D2D2;
+      }
+
+      a:visited {
+        color: #888;
+      }
+      a.selected {
+        background-image: -webkit-linear-gradient(top,#CCC,#A9A9A9);
+        color: #333;
+        border-right: 1px solid #888;
+        border-left: 1px solid #888;
+        margin-left: -5px;
+      }
+      #frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .container {
+        position: fixed;
+        top: 40px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      .host {
+        position: relative;
+        height: 100%;
+      }
+      h1 {
+        color: #888;
+        font-size: 300%;
+        letter-spacing: -3px;
+        font-weight: bold;
+        margin-bottom: -38px;
+        position: absolute;
+        top: -25px;
+        right: 6px;
+      }
+    </style>
+
+    <script type='text/javascript'>
+    window.addEventListener('hashchange', function() {
+      select(window.location.hash);
+    }, false);
+
+    window.addEventListener('load', function() {
+      select(window.location.hash);
+    }, false);
+
+    function select(hash) {
+      var tool = 'distance';
+      if (hash && hash.length > 1) {
+        tool = hash.slice(1);
+      }
+      var frame = document.getElementById('frame');
+      frame.contentWindow.location.hash = tool;
+
+      _gaq.push(['_trackPageview', '/rooler/' + tool]);
+
+      var nav = document.getElementById('navigation');
+      for (var i = 0; i < nav.children.length; ++i) {
+        rooler.removeClass(nav.children[i], 'selected');
+      }
+      var menu = document.getElementById(tool);
+      if (menu) {
+        rooler.addClass(menu, 'selected');
+      }
+    }
+    </script>
+  <body>
+    <div class='header'>
+      <div class='navigation' id='navigation'>
+        <a href='#distance' id='distance'><div class='item'>Distance</div></a>
+        <a href='#bounds' id='bounds'><div class='item'>Bounds</div></a>
+        <!-- <a href='#magnify'><div class='item'>Magnify</div></a> -->
+        <a href='#loupe' id='loupe'><div class='item'>Magnify</div></a>
+      </div>
+      <h1>Rooler.</h1>
+    </div>
+
+    <div class='container'>
+      <div class='host'>
+        <iframe id='frame' src='/rooler/demo.html'></iframe>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-23226157-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <script type="text/javascript" src="/rooler/rooler/base.js"></script>
+  </body>
+</html>

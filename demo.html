@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>r o o l e r</title>
+    <style>
+      html body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      body {
+        font: .8em Arial, Helvetica, 'bitstream vera sans', sans-serif;
+        overflow: hidden;
+      }
+      h1 {
+        color: #888;
+        font-size: 300%;
+        letter-spacing: -3px;
+        font-weight: bold;
+        margin-bottom: -38px;
+      }
+
+      h2 {
+        color: #CCC;
+        font-size: 200%;
+        letter-spacing: -2px;
+        font-weight: bold;
+      }
+      h3 {
+        margin-bottom: 0;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      #contentRoot {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: white;
+      }
+
+      .content {
+        width:200px;
+        margin: 200px auto 0 auto;
+      }
+
+      #curve1 {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+      #curve2 {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+
+      #install {
+        font-size: 150%;
+        display: inline-block;
+        padding: 3px 10px;
+        margin-left: 53px;
+        top: 84px;
+        z-index: 5000;
+        position: absolute;
+        visibility: hidden;
+        background-image: -webkit-linear-gradient(top,#888,#666);
+        color: white;
+        -moz-box-shadow: 0px 2px 5px #888;
+        -webkit-box-shadow: 0px 2px 5px #888;
+        box-shadow: 0px 2px 5px #888;
+      }
+      #install:hover {
+        background-image: -webkit-linear-gradient(top,#777,#555);
+      }
+
+      .instructions {
+        position: absolute;
+        margin-left: -20px;
+        width: 300px;
+        top: 250px;
+        color: #888;
+      }
+
+    </style>
+
+    <link href='rooler/rooler.css' rel='stylesheet' type='text/css'/>
+    <script src='rooler/base.js' type='text/javascript'></script>
+    <script src='html2canvas.js' type='text/javascript'></script>
+    <script src='rooler/tool.js' type='text/javascript'></script>
+    <script src='rooler/screenshot.js' type='text/javascript'></script>
+    <script src='rooler/screencoordinates.js' type='text/javascript'></script>
+    <script src='rooler/capture.js' type='text/javascript'></script>
+    <script src='rooler/loupe.js' type='text/javascript'></script>
+    <script src='rooler/magnifier.js' type='text/javascript'></script>
+    <script src='rooler/bounds.js' type='text/javascript'></script>
+    <script src='rooler/distance.js' type='text/javascript'></script>
+    <script src='rooler/rooler.js' type='text/javascript'></script>
+
+    <script type='text/javascript'>
+    window.Rooler = {};
+    var tool = null;
+    var instructions = null;
+
+    start = function() {
+      if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+        document.getElementById('install').style.visibility = 'visible';
+      }
+
+      if (tool) {
+        tool.close();
+        tool = null;
+      }
+
+      window.Rooler.screenCoordinates = new rooler.ScreenCoordinates();
+
+      var hash = window.location.hash;
+      var toolName = 'DistanceTool';
+      if (hash) {
+        var name = hash.slice(1);
+        if (name == 'bounds') {
+          toolName = 'BoundsTool';
+        } else if (name == 'magnify') {
+          toolName = 'Magnifier';
+        } else if (name == 'loupe') {
+          toolName = 'Loupe';
+        }
+      }
+
+      if (instructions) {
+        rooler.addClass(instructions, 'roolerHidden');
+      }
+
+      instructions = document.getElementById(toolName + 'Instructions');
+      if (instructions) {
+        rooler.removeClass(instructions, 'roolerHidden');
+      }
+
+      tool = new rooler[toolName]();
+      tool.setCanClose(false);
+
+      updateScreenshot();
+    }
+
+    updateScreenshot = function() {
+      var canvas = rooler.Html2Canvas.capture(document.getElementById('contentRoot'));
+      window.Rooler.screenShot = new rooler.ScreenShot(canvas)
+
+      // document.body.appendChild(canvas);
+      // canvas.style.position = 'absolute';
+      // canvas.style.top = '0';
+      // canvas.style.left = '0';
+      // canvas.style.opacity = .8;
+    }
+
+    window.addEventListener('load', function() {
+      start();
+    }, false);
+
+    window.addEventListener('resize', function() {
+      updateScreenshot();
+    }, false);
+
+    window.addEventListener('hashchange', function() {
+      start();
+    }, false);
+    </script>
+  </head>
+  <body>
+    <div id='contentRoot'>
+      <div class='content'>
+        <img id='curve1', src='curve.png'/>
+        <img id='curve2', src='curve2.png'/>
+        <div style='position: relative; top: -86px;'>
+          <h1><span>Rooler</span></h1>
+          <h2><span>Rool the world.</span></h2>
+            <a id='install' href='rooler.crx'><span>Install</span><span style='font-size:.5em; display:block'>Chrome Extension</span></a>
+        </div>
+        <div>
+      </div>
+      <div id='MagnifierInstructions' class='instructions roolerHidden'>
+        <h3>Magnifier</h3>
+        <div>&raquo;Use arrow keys to micro-adjust the position.</div>
+        <div>&raquo;Use 'space' key to reset the coordinates- useful</div>
+        <div style='margin-left:8px'>for complex measurements.</div>
+      </div>
+      <div id='BoundsToolInstructions' class='instructions roolerHidden'>
+        <h3>Bounds</h3>
+        <div>&raquo;Drag a box around the element to be measured.</div>
+        <div>&raquo;Click the camera icon to save the selected area.</div>
+      </div>
+      <div id='LoupeInstructions' class='instructions roolerHidden'>
+        <h3>Magnifier</h3>
+        <div>&raquo;Use arrow keys to micro-adjust the position.</div>
+        <div>&raquo;Use 'space' key to reset the coordinates- useful</div>
+        <div style='margin-left:8px'>for complex measurements.</div>
+      </div>
+    </div>
+  </body>
+</html>

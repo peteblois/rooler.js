@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DistanceTests</title>
+    <style>
+      html body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font: .8em Arial, Helvetica, 'bitstream vera sans', sans-serif;
+        overflow: hidden;
+      }
+      
+      .box {
+        margin: 100px;
+        border: 20px solid black;
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+    
+    <link href='../rooler/rooler.css' rel='stylesheet' type='text/css'/>
+    
+    <script src='../rooler/rooler.js' type='text/javascript'></script>
+    <script src='../rooler/distance.js' type='text/javascript'></script>
+    <script src='../rooler/screencoordinates.js' type='text/javascript'></script>
+    <script src='../rooler/screenshot.js' type='text/javascript'></script>
+    
+    <script type='text/javascript'>
+    window.Rooler = {};
+    
+    start = function() {
+      var canvas = document.createElement('canvas');
+      canvas.width = 200;
+      canvas.height = 200;
+
+      var context = canvas.getContext('2d');
+      context.fillStyle = 'blue';
+      context.fillRect(50, 50, 100, 100);
+
+      document.body.appendChild(canvas);
+      var screenShot = rooler.ScreenShot.fromCanvas(canvas);
+      var screenCoordinates = new rooler.ScreenCoordinates();
+
+      var dimensions = screenCoordinates.expandPoint({
+        x: canvas.width / 2,
+        y: canvas.height / 2
+      }, screenShot);
+
+      validate(dimensions, {
+        top: 50,
+        left: 50,
+        width: 100,
+        height: 100,
+      });
+
+      dimensions = screenCoordinates.expandPoint({
+        x: canvas.width / 2,
+        y: 175
+      }, screenShot);
+
+      validate(dimensions, {
+        top: 150,
+        left: 0,
+        width: 200,
+        height: 50,
+      });
+
+      dimensions = screenCoordinates.expandPoint({
+        x: 151,
+        y: canvas.height / 2
+      }, screenShot);
+
+      validate(dimensions, {
+        top: 50,
+        left: 150,
+        width: 50,
+        height: 100,
+      });
+
+      var box = screenCoordinates.collapseBox({
+        left: 25,
+        right: 175,
+        top: 25,
+        bottom: 175
+      }, screenShot);
+
+      validate(box, {
+        left: 50,
+        right: 150,
+        top: 50,
+        bottom: 150
+      });
+
+    }
+
+    function validate(dimensions, rect) {
+      if (rect.left && dimensions.left != rect.left) {
+        alert('dimensions.left should be ' + rect.left + ': ' + dimensions.left);
+        return false;
+      }
+      if (rect.width && dimensions.width != rect.width) {
+        alert('dimensions.width should be ' + rect.width + ': ' + dimensions.width);
+        return false;
+      }
+      if (rect.top && dimensions.top != rect.top) {
+        alert('dimensions.top should be ' + rect.top + ': ' + dimensions.top);
+        return false;
+      }
+      if (rect.height && dimensions.height != rect.height) {
+        alert('dimensions.height should be ' + rect.height + ': ' + dimensions.height);
+        return false;
+      }
+      return true;
+    }
+    
+    window.addEventListener('load', function() {
+      start();
+    }, false);
+    </script>
+  </head>
+  <body>
+    <!--<div class='box'></div>-->
+    <!-- <img src='box.png' id='box'/> -->
+  </body>
+</html>

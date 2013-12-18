@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link rel="stylesheet" type="text/css" href="Rooler.css"/> 
+    <title>Rool the Web</title>
+	<script src="../Scripts/jquery-1.4.2.js" type="text/javascript"></script>
+	<script src="Rooler.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			var website = "http://blois.us";
+
+			if (window.location.hash) {
+				website = window.location.hash.substr(1, window.location.hash.length - 1);
+			}
+
+			$(".rooler").each(function () {
+				var width = $(this).width();
+				var height = $(this).height();
+
+				var rool = new Rooler(this);
+				var imageUrl = "../Site.aspx?su=" + website + "&w=" + width + "&h=" + height;
+				rool.load(imageUrl);
+			});
+
+		});
+	</script>
+</head>
+<body>
+
+	<div class='rooler'></div>
+
+</body>
+</html>
+
+<!--<div class='roolerCrosshairs'>
+			<div class='roolerVertical'>
+				<div class='roolerVerticalBar'></div>
+				<div class='roolerVerticalTop'></div>
+				<div class='roolerVerticalBottom'></div>
+			</div>
+			<div class='roolerHorizontal'>
+				<div class='roolerHorizontalBar'></div>
+				<div class='roolerHorizontalLeft'></div>
+				<div class='roolerHorizontalRight'></div>
+			</div>
+			<div class='roolerDimensions'>100 x 100</div>
+		</div>-->

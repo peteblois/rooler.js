@@ -1,0 +1,14 @@
+{
+	"name": {
+		"message": "Rooler",
+		"description": "Extension name in manifest."
+	},
+	"description": {
+		"message": "Redline web pages",
+		"description": "Extension description in manifest."
+	},
+	"default_title": {
+		"message": "Rooler",
+		"description": "Extension browser action tooltip text in manifest."
+	}
+}
