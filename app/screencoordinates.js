@@ -6,8 +6,8 @@ rooler.ScreenCoordinates = function() {
 rooler.ScreenCoordinates.colorTolerance = 15;
 
 rooler.ScreenCoordinates.prototype.expandPoint = function (position, screenshot) {
-  var x = position.x;
-  var y = position.y;
+  var x = position.x * window.devicePixelRatio;
+  var y = position.y * window.devicePixelRatio;
 
   var top = screenshot.top;
   var bottom = screenshot.bottom;
@@ -19,27 +19,31 @@ rooler.ScreenCoordinates.prototype.expandPoint = function (position, screenshot)
 
   if (right > left && bottom > top) {
     return {
-      left: left,
-      top: top,
-      width: right - left,
-      height: bottom - top
+      left: left / window.devicePixelRatio,
+      top: top / window.devicePixelRatio,
+      width: (right - left) / window.devicePixelRatio,
+      height: (bottom - top) / window.devicePixelRatio
     };
   }
   return {};
 };
 
 rooler.ScreenCoordinates.prototype.collapseBox = function(rect, screenshot) {
-  var left = this.findNearestX(rect.left, rect.top, rect.bottom, 1, screenshot).x;
-  var right = this.findNearestX(rect.right, rect.top, rect.bottom, -1, screenshot).x;
-  var top = this.findNearestY(rect.left, rect.right, rect.top, 1, screenshot).y;
-  var bottom = this.findNearestY(rect.left, rect.right, rect.bottom, -1, screenshot).y;
+  var rectLeft = rect.left * window.devicePixelRatio;
+  var rectRight = rect.right * window.devicePixelRatio;
+  var rectTop = rect.top * window.devicePixelRatio;
+  var rectBottom = rect.bottom * window.devicePixelRatio;
+  var left = this.findNearestX(rectLeft, rectTop, rectBottom, 1, screenshot).x;
+  var right = this.findNearestX(rectRight, rectTop, rectBottom, -1, screenshot).x;
+  var top = this.findNearestY(rectLeft, rectRight, rectTop, 1, screenshot).y;
+  var bottom = this.findNearestY(rectLeft, rectRight, rectBottom, -1, screenshot).y;
 
   if (left < right && top < bottom) {
     return {
-      left: left,
-      top: top,
-      right: right,
-      bottom: bottom
+      left: left / window.devicePixelRatio,
+      top: top / window.devicePixelRatio,
+      right: right / window.devicePixelRatio,
+      bottom: bottom / window.devicePixelRatio
     };
   }
   return null;

@@ -102,8 +102,8 @@ rooler.Loupe.prototype.update = function() {
   if (window.Rooler.screenShot) {
     var scale = this.magnification;
     var offset = {
-      x: this.offset.x - c2.r / scale,
-      y: this.offset.y - c2.r / scale
+      x: this.offset.x * window.devicePixelRatio - c2.r / scale,
+      y: this.offset.y * window.devicePixelRatio - c2.r / scale
     }
     var zoomContext = this.zoomCanvas.getContext('2d');
     zoomContext.clearRect(0, 0, this.zoomCanvas.width, this.zoomCanvas.height);

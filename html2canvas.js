@@ -2,8 +2,8 @@ var rooler = rooler || {};
 
 // Super hacky class to render an HTML DOM to a canvas element.
 rooler.Html2Canvas = function(element) {
-  var width = element.scrollWidth;
-  var height = element.scrollHeight;
+  var width = element.scrollWidth * devicePixelRatio;
+  var height = element.scrollHeight * devicePixelRatio;
 
   this.canvas = document.createElement('canvas');
   this.canvas.width = width;
@@ -11,6 +11,8 @@ rooler.Html2Canvas = function(element) {
   this.context = this.canvas.getContext('2d');
 
   this.baseOffset = this.getOffset(element);
+
+  this.context.scale(devicePixelRatio, devicePixelRatio);
 
   this.draw(element);
 

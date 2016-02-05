@@ -14,9 +14,6 @@ rooler.Popup = function() {
 
   var loupeMenuItem = document.getElementById('loupeTool');
   loupeMenuItem.addEventListener('click', this.openLoupeTool.bind(this), false);
-
-  var feedbackMenuItem = document.getElementById('feedback');
-  feedbackMenuItem.addEventListener('click', this.sendFeedback.bind(this), false);
 };
 
 rooler.Popup.prototype.openDistanceTool = function() {
