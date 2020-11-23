@@ -78,7 +78,7 @@ export class DistanceTool extends Tool {
     if (!coordinates) {
       return;
     }
-    
+
     coordinates.left += window.pageXOffset;
 
     this.crosshairs.style.left = coordinates.left + myOffset.left + 'px';

@@ -19,17 +19,19 @@ import {Loupe} from '../loupe';
   const canvas = Html2Canvas.capture(root);
 
   const screenshot = new ScreenShot(canvas);
-  const bounds = new Bounds(screenshot);
-  bounds.open();
-  bounds.setCanClose(false);
-
-  // const loupe = new Loupe(screenshot);
-  // loupe.setCanClose(false);
-  // loupe.open();
-
-  // const distance = new DistanceTool(screenshot);
-  // distance.setCanClose(false);
-  // distance.open();
+  if (window.location.hash == '#bounds') {
+    const bounds = new Bounds(screenshot);
+    bounds.open();
+    bounds.setCanClose(false);
+  } else if (window.location.hash == '#loupe') {
+    const loupe = new Loupe(screenshot);
+    loupe.setCanClose(false);
+    loupe.open();
+  } else {
+    const distance = new DistanceTool(screenshot);
+    distance.setCanClose(false);
+    distance.open();
+  }
 
   document.body.appendChild(canvas);
   canvas.style.width = '100%'

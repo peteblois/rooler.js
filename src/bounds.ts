@@ -3,6 +3,7 @@ import { Capture } from "./capture";
 import { ScreenShot } from "./screenshot";
 import { ScreenCoordinates } from "./screen_coordinates";
 import {default as cameraIcon}  from './camera.png';
+import { Tool } from "./tool";
 
 interface Rect {
   left: number;
@@ -11,8 +12,7 @@ interface Rect {
   top: number;
 }
 
-export class Bounds {
-  private readonly root: HTMLElement;
+export class Bounds extends Tool {
   private readonly boundsRoot: HTMLElement;
   private readonly top: HTMLElement;
   private readonly right: HTMLElement;
@@ -23,18 +23,19 @@ export class Bounds {
   private readonly dimensions: HTMLElement;
   private readonly cameraButton: HTMLAnchorElement;
   private readonly instructions: HTMLElement;
-  private readonly disposer = new Disposer();
   private readonly overlay: HTMLElement;
   private start: Position = {x: 0, y: 0};
   private end: Position = {x: 0, y: 0};
   private isMouseDown = false;
-  private canClose = true;
   private closeOnClick = false;
   private readonly screenCoordinates = new ScreenCoordinates();
   private rect: Rect = {left: 0, right: 0, bottom: 0, top: 0};
 
-  constructor(private readonly screenShot: ScreenShot) {
-    this.root = createElement('div', 'roolerRoot');
+  constructor(screenShot: ScreenShot) {
+    super(screenShot);
+
+    this.overlay = createElement('div', 'roolerOverlay');
+    this.root.appendChild(this.overlay);
 
     this.boundsRoot = createElement('div', 'roolerBoundsRoot');
     this.root.appendChild(this.boundsRoot);
@@ -64,17 +65,14 @@ export class Bounds {
     this.instructions.textContent = 'Click and drag to create a rectangle to be measured.';
     this.boundsRoot.appendChild(this.instructions);
 
-    this.overlay = createElement('div', 'roolerOverlay');
-
     this.hideCamera();
   }
 
   open() {
+    super.open();
+
     this.bodyUserSelect = document.body.style.userSelect;
     document.documentElement.style.userSelect = 'none';
-
-    document.documentElement.appendChild(this.overlay);
-    document.documentElement.appendChild(this.root);
 
     this.disposer.add(listen(window, 'mousemove', (event: MouseEvent) => {
       this.handleMouseMove(event);
@@ -88,9 +86,6 @@ export class Bounds {
       this.handleMouseUp(event);
     }));
 
-    this.disposer.add(listen(window, 'scroll', () => {
-      this.handleWindowScroll();
-    }));
     this.disposer.add(listen(window, 'mousewheel', (event: Event) => {
       this.handleMouseWheel(event as WheelEvent);
     }, {passive: false}));
@@ -102,24 +97,8 @@ export class Bounds {
     }, false);
   }
 
-  hide() {
-    this.overlay.classList.add('roolerHidden');
-    this.root.classList.add('roolerHidden');
-  }
-  show() {
-    this.overlay.classList.remove('roolerHidden');
-    this.root.classList.remove('roolerHidden');
-  }
-
-  setCanClose(canClose: boolean) {
-    this.canClose = canClose;
-  }
-
   close() {
-    this.disposer.dispose();
-
-    this.root.remove();
-    this.overlay.remove();
+    super.close();
 
     document.documentElement.style.userSelect = this.bodyUserSelect;
   }
@@ -219,10 +198,6 @@ export class Bounds {
     this.dimensions.textContent = (width + ' x ' + height);
   }
 
-  private handleWindowScroll() {
-    this.screenShot.requestUpdate();
-  }
-
   private handleMouseWheel(event: WheelEvent) {
     event.preventDefault();
     event.stopPropagation();
@@ -270,10 +245,11 @@ export class Bounds {
       const image = this.screenShot.captureRect(this.rect);
       if (image) {
         const data = image.toDataURL();
-        const popup = new Capture(data, {
+        const popup = new Capture(this.screenShot, data, {
           width: this.rect.right - this.rect.left,
           height: this.rect.bottom - this.rect.top
         });
+        popup.open();
       }
     }
   }

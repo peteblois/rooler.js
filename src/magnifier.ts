@@ -1,4 +1,4 @@
-import { applyRootStyle, createElement, Disposer, listen, Position} from "./base";
+import { createElement, Disposer, listen, Position} from "./base";
 import { ScreenShot } from "./screenshot";
 import {default as closeIcon}  from './close.png';
 
@@ -20,7 +20,7 @@ export class Magnifier {
 
   constructor(private readonly screenShot: ScreenShot) {
     this.root = createElement('div', 'roolerRoot');
-    applyRootStyle(this.root);
+    // applyRootStyle(this.root);
     const magnifier = createElement('div', 'roolerMagnifier');
     this.root.appendChild(magnifier);
 

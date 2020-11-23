@@ -1,24 +1,20 @@
 import { createElement, Disposer, listen } from "./base";
+import { Tool } from "./tool";
+import { ScreenShot } from "./screenshot";
 
-export interface Size {
+interface Size {
   width: number;
   height: number;
 }
 
-export class Capture {
-  private readonly url: string;
-  private readonly size: Size;
-  private readonly root: HTMLElement;
+export class Capture extends Tool {
   private readonly popup: HTMLElement;
   private readonly img: HTMLImageElement;
-  private readonly disposer = new Disposer();
 
-  constructor(url: string, size: Size) {
-    this.url = url;
-    this.size = size;
+  constructor(screenShot: ScreenShot, url: string, size: Size) {
+    super(screenShot);
 
-    this.root = document.createElement('div');
-    this.root.classList.add('roolerShield', 'roolerRoot');
+    this.root.classList.add('roolerShield');
 
     this.popup = createElement('div', 'roolerPopup');
     this.root.appendChild(this.popup);
@@ -32,25 +28,18 @@ export class Capture {
 
     this.img = document.createElement('img');
     this.img.src = url;
+    this.img.style.width = `${size.width}px`;
+    this.img.style.height = `${size.height}px`;
     matte.appendChild(this.img);
 
-    document.body.appendChild(this.root);
-
     this.disposer.add(listen(this.root, 'mousedown', (event: MouseEvent) => {
-      this.close(event);
+      this.close();
     }));
 
     this.disposer.add(listen(this.popup, 'mousedown', (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
     }));
-  }
-
-  close(event: Event) {
-    document.body.removeChild(this.root);
-
-    event.preventDefault();
-    event.stopPropagation();
   }
 
   save() {

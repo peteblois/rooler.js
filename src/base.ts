@@ -27,15 +27,6 @@ export interface Position {
   y: number;
 }
 
-
-export function applyRootStyle(root: HTMLElement) {
-  root.style.position = 'fixed';
-  root.style.left = '0';
-  root.style.right = '0';
-  root.style.top = '0';
-  root.style.bottom = '0';
-}
-
 export interface IDisposable {
   dispose(): void;
 }

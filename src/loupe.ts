@@ -1,7 +1,6 @@
 import { createElement, listen, Position} from "./base";
 import { ScreenShot } from "./screenshot";
 import { Tool } from "./tool";
-import {Magnifier} from './magnifier';
 
 const circlesLeft = {
   c1: 30,
@@ -109,7 +108,7 @@ export class Loupe extends Tool {
     const zoomContext = this.zoomCanvas.getContext('2d')!;
     zoomContext.clearRect(0, 0, this.zoomCanvas.width, this.zoomCanvas.height);
 
-    Magnifier.scale(this.screenShot.canvas, this.zoomCanvas, scale, offset);
+    Loupe.scale(this.screenShot.canvas, this.zoomCanvas, scale, offset);
     zoomContext.strokeStyle = 'rgba(255, 0, 0, .5)';
     zoomContext.lineWidth = 1;
     zoomContext.beginPath();
@@ -286,5 +285,30 @@ export class Loupe extends Tool {
       event.preventDefault();
       event.stopPropagation();
     }
+  }
+
+  static scale(srcCanvas: HTMLCanvasElement, dstCanvas: HTMLCanvasElement, scale: number, offset: Position) {
+    const height = dstCanvas.height;
+    const width = dstCanvas.width;
+    const src = srcCanvas.getContext('2d')!;
+    const dst = dstCanvas.getContext('2d')!;
+    const srcImageData = src.getImageData(offset.x, offset.y, width / scale, height / scale);
+    const srcData = srcImageData.data;
+
+    const dstImageData = dst.getImageData(0, 0, width, height);
+    const dstData = dstImageData.data;
+    for (let y = 0; y < height; ++y) {
+      let dstIndex = (y * dstCanvas.width) * 4;
+      for (let x = 0; x < width; ++x) {
+        var srcIndex = (Math.round(y / scale) * srcImageData.width + Math.round(x / scale)) * 4;
+        dstData[dstIndex] = srcData[srcIndex];
+        dstData[dstIndex + 1] = srcData[srcIndex + 1];
+        dstData[dstIndex + 2] = srcData[srcIndex + 2];
+        dstData[dstIndex + 3] = srcData[srcIndex + 3];
+
+        dstIndex += 4;
+      }
+    }
+    dst.putImageData(dstImageData, 0, 0);
   }
 }

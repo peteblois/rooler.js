@@ -1,20 +1,34 @@
-import {applyRootStyle, createElement, Disposer, listen} from './base';
+import {Disposer, listen} from './base';
 import { ScreenShot } from './screenshot';
+import * as css from './rooler.css';
 
 export abstract class Tool {
+  private readonly tool = document.createElement('div');
   protected readonly root: HTMLElement;
   protected canClose = true;
   protected readonly disposer = new Disposer();
 
   constructor(protected readonly screenShot: ScreenShot) {
-    this.root = createElement('div', 'roolerRoot');
-    applyRootStyle(this.root);
-    this.root.style.overflow = 'hidden';
-    this.root.style.zIndex = '1000';
+    this.tool.style.position = 'fixed';
+    this.tool.style.top = '0';
+    this.tool.style.left = '0';
+    this.tool.style.right =  '0';
+    this.tool.style.bottom = '0';
+    this.tool.style.font = `12px Arial, Helvetica, 'bitstream vera sans', sans-serif`;
+    this.tool.style.overflow = 'hidden';
+    this.tool.style.zIndex ='1000';
+
+    const shadowRoot = this.tool.attachShadow({mode: 'open'});
+    const style = document.createElement('style');
+    style.textContent = css.stylesheet;
+    shadowRoot.appendChild(style);
+
+    this.root = document.createElement('div');
+    shadowRoot.appendChild(this.root);
   }
 
   open() {
-    document.documentElement.appendChild(this.root);
+    document.documentElement.appendChild(this.tool);
     this.disposer.add(listen(window, 'scroll', () => {
       this.handleWindowScroll();
     }));
@@ -26,7 +40,7 @@ export abstract class Tool {
 
   close() {
     this.disposer.dispose();
-    this.root.remove();
+    this.tool.remove();
   }
 
   private handleWindowScroll() {

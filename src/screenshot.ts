@@ -55,12 +55,11 @@ export class ScreenShot {
 
   captureRect(rect: Rect): HTMLCanvasElement {
     const canvas = document.createElement('canvas');
-    canvas.width = (rect.right - rect.left);
-    canvas.height = (rect.bottom - rect.top);
+    canvas.width = (rect.right - rect.left) * window.devicePixelRatio;
+    canvas.height = (rect.bottom - rect.top) * window.devicePixelRatio;
 
     const context = canvas.getContext('2d')!;
-    context.translate(-rect.left, -rect.top);
-    context.scale(1 / window.devicePixelRatio, 1 / window.devicePixelRatio);
+    context.translate(-rect.left * window.devicePixelRatio, -rect.top * window.devicePixelRatio);
     context.drawImage(this.canvas, 0, 0);
 
     return canvas;
