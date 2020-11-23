@@ -71,20 +71,20 @@ export class Bounds {
 
   open() {
     this.bodyUserSelect = document.body.style.userSelect;
-    document.body.style.userSelect = 'none';
+    document.documentElement.style.userSelect = 'none';
 
-    document.body.appendChild(this.overlay);
-    document.body.appendChild(this.root);
+    document.documentElement.appendChild(this.overlay);
+    document.documentElement.appendChild(this.root);
 
-    this.disposer.add(listen(document.body, 'mousemove', (event: MouseEvent) => {
+    this.disposer.add(listen(window, 'mousemove', (event: MouseEvent) => {
       this.handleMouseMove(event);
     }));
 
-    this.disposer.add(listen(document.body, 'mousedown', (event: MouseEvent) => {
+    this.disposer.add(listen(window, 'mousedown', (event: MouseEvent) => {
       this.handleMouseDown(event);
     }));
 
-    this.disposer.add(listen(document.body, 'mouseup', (event: MouseEvent) => {
+    this.disposer.add(listen(window, 'mouseup', (event: MouseEvent) => {
       this.handleMouseUp(event);
     }));
 
@@ -121,7 +121,7 @@ export class Bounds {
     this.root.remove();
     this.overlay.remove();
 
-    document.body.style.userSelect = this.bodyUserSelect;
+    document.documentElement.style.userSelect = this.bodyUserSelect;
   }
 
   private handleMouseDown(event: MouseEvent) {
@@ -132,11 +132,11 @@ export class Bounds {
     this.isMouseDown = true;
     this.start = {
       x: event.pageX - window.pageXOffset,
-      y: event.pageY - window.pageYOffset
+      y: event.pageY - window.pageYOffset,
     };
     this.end = {
       x: event.pageX - window.pageXOffset,
-      y: event.pageY - window.pageYOffset
+      y: event.pageY - window.pageYOffset,
     };
     this.updateRect();
     this.hideCamera();
@@ -153,7 +153,7 @@ export class Bounds {
     }
     this.end = {
       x: event.pageX - window.pageXOffset,
-      y: event.pageY - window.pageYOffset
+      y: event.pageY - window.pageYOffset,
     };
     this.updateRect();
     if (this.canClose) {
@@ -172,7 +172,7 @@ export class Bounds {
     if (event.pageX) {
       this.end = {
         x: event.pageX - window.pageXOffset,
-        y: event.pageY - window.pageYOffset
+        y: event.pageY - window.pageYOffset,
       };
     }
     this.collapseRect();
@@ -206,7 +206,7 @@ export class Bounds {
 
   private update() {
     this.top.style.height = this.rect.top + 'px';
-    this.bottom.style.height = window.innerHeight - this.rect.bottom + 'px';
+    this.bottom.style.height = (window.innerHeight - this.rect.bottom) + 'px';
     this.bottom.style.width = this.rect.right + 'px';
     this.left.style.width = this.rect.left + 'px';
     this.left.style.top = this.rect.top + 'px';

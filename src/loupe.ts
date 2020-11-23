@@ -3,15 +3,6 @@ import { ScreenShot } from "./screenshot";
 import { Tool } from "./tool";
 import {Magnifier} from './magnifier';
 
-interface Circle {
-  r: number;
-}
-
-interface Circles {
-  c1: Circle;
-  c2: Circle;
-}
-
 const circlesLeft = {
   c1: 30,
   c2: 110
@@ -80,15 +71,15 @@ export class Loupe extends Tool {
 
   open() {
     super.open();
-    this.disposer.add(listen(document.body, 'mousemove', (event: MouseEvent)=> {
+    this.disposer.add(listen(window, 'mousemove', (event: MouseEvent)=> {
       this.handleMouseMove(event);
     }));
-    this.disposer.add(listen(document.body, 'mousedown', (event: MouseEvent)=> {
+    this.disposer.add(listen(window, 'mousedown', (event: MouseEvent)=> {
       this.handleMouseDown();
     }));
-    this.disposer.add(listen(document.body, 'keydown', (event: KeyboardEvent)=> {
+    this.disposer.add(listen(window, 'keydown', (event: KeyboardEvent)=> {
       this.handleKeyDown(event);
-    }));
+    }, {capture: true}));
   }
 
   handleMouseMove(event: MouseEvent) {
@@ -265,28 +256,35 @@ export class Loupe extends Tool {
   }
 
   handleKeyDown(event: KeyboardEvent) {
-    if (event.keyCode == 32) {
+    if (event.code == 'Space') {
       event.preventDefault();
+      event.stopPropagation();
+
       this.base.x = this.offset.x;
       this.base.y = this.offset.y;
 
       this.update();
-    } else if (event.keyCode == 37) {
+    } else if (event.code == 'ArrowLeft') {
       this.offset.x -= 1;
       this.update();
       event.preventDefault();
-    } else if (event.keyCode == 38) {
+      event.stopPropagation();
+
+    } else if (event.code == 'ArrowUp') {
       this.offset.y -= 1;
       this.update();
       event.preventDefault();
-    } else if (event.keyCode == 39) {
+      event.stopPropagation();
+    } else if (event.code == 'ArrowRight') {
       this.offset.x += 1;
       this.update();
       event.preventDefault();
-    } else if (event.keyCode == 40) {
+      event.stopPropagation();
+    } else if (event.code == 'ArrowDown') {
       this.offset.y += 1;
       this.update();
       event.preventDefault();
+      event.stopPropagation();
     }
   }
 }

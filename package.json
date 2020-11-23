@@ -2,14 +2,16 @@
   "scripts": {
     "tsc-watch": "tsc -w",
     "rollup-demo": "rollup -c rollup.config.demo.js",
-    "rollup-demo-watch": "rollup -w -c rollup.config.demo.js",
+    "demo-watch": "rollup -w -c rollup.config.demo.js",
     "demo-files": "copyfiles -u 2 src/demo/* built/demo",
     "demo-css": "copyfiles -u 1 src/rooler.css built/demo",
     "demo": "npm run demo-files && npm run demo-css && npm run rollup-demo",
     "extension-code": "rollup -c rollup.config.extension.js",
+    "extension-watch": "rollup -w -c rollup.config.extension.js",
     "extension-files": "copyfiles -u 2 src/extension/* src/extension/_locales/en/* built/extension",
     "extension": "npm run extension-files && npm run extension-code",
-    "clean": "rimraf built"
+    "clean": "rimraf built",
+    "build": "npm run clean && npm run extension && npm run demo"
   },
   "devDependencies": {
     "@rollup/plugin-image": "^2.0.5",

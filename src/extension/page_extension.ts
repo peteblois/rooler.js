@@ -11,7 +11,7 @@ interface Message {
 
 /**
  * Runs in the context of the page which is being inspected.
- **/
+ */
 class Rooler {
   private readonly port: chrome.runtime.Port;
   private tools: (DistanceTool|Bounds|Loupe)[] = [];
@@ -23,14 +23,15 @@ class Rooler {
     this.port.onMessage.addListener((event) => {
       this.handleMessage(event);
     });
-    //chrome.extension.onRequest.addListener(this.handleRequest.bind(this));
 
     this.port.postMessage({
       msg: 'start'
     });
 
     const canvas = document.createElement('canvas');
-    this.screenShot = new ScreenShot(canvas);
+    this.screenShot = new ScreenShot(canvas, () => {
+      this.requestUpdateScreenshot();
+    });
   }
   private handleMessage(msg: Message) {
     var fn = (this as any)[msg.msg];
@@ -38,19 +39,25 @@ class Rooler {
   }
 
   startDistanceTool() {
-    this.tools.push(new DistanceTool(this.screenShot));
+    const tool = new DistanceTool(this.screenShot);
+    this.tools.push(tool);
+    tool.open();
 
     this.requestUpdateScreenshot();
   }
 
   startBoundsTool() {
-    this.tools.push(new Bounds(this.screenShot));
+    const tool = new Bounds(this.screenShot);
+    this.tools.push(tool);
+    tool.open();
 
     this.requestUpdateScreenshot();
   }
 
   startLoupeTool() {
-    this.tools.push(new Loupe(this.screenShot));
+    const tool = new Loupe(this.screenShot)
+    this.tools.push(tool);
+    tool.open();
 
     this.requestUpdateScreenshot();
   }
@@ -83,6 +90,6 @@ class Rooler {
   }
 }
 
-if (!(window as any).Rooler && window.chrome && window.chrome.extension) {
-  (window as any).Rooler = new Rooler();
+if (!(window as any).rooler && window.chrome && window.chrome.extension) {
+  (window as any).rooler = new Rooler();
 }

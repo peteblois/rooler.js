@@ -74,17 +74,7 @@ rooler.Background.prototype.postCommand = function(command, tab) {
   }
   else {
     this.pendingCommands[tab.id] = command;
-    chrome.tabs.executeScript(tab.id, { file: 'base.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'tool.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'distance.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'capture.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'bounds.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'loupe.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'magnifier.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'screencoordinates.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'screenshot.js' } );
-    chrome.tabs.insertCSS(tab.id, { file: 'rooler.css' } );
-    chrome.tabs.executeScript(tab.id, { file: 'rooler.js' } );
+    chrome.tabs.executeScript(tab.id, { file: 'page_extension.js' } );
   }
 }
 

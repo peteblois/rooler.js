@@ -2,7 +2,7 @@ import {applyRootStyle, createElement, Disposer, listen} from './base';
 import { ScreenShot } from './screenshot';
 
 export abstract class Tool {
-  protected readonly root;
+  protected readonly root: HTMLElement;
   protected canClose = true;
   protected readonly disposer = new Disposer();
 
@@ -11,14 +11,13 @@ export abstract class Tool {
     applyRootStyle(this.root);
     this.root.style.overflow = 'hidden';
     this.root.style.zIndex = '1000';
-
-    this.disposer.add(listen(window, 'scroll', () => {
-      this.handleWindowScroll();
-    }))
   }
 
   open() {
-    document.body.appendChild(this.root);
+    document.documentElement.appendChild(this.root);
+    this.disposer.add(listen(window, 'scroll', () => {
+      this.handleWindowScroll();
+    }));
   }
 
   setCanClose(value: boolean) {

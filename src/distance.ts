@@ -39,10 +39,10 @@ export class DistanceTool extends Tool {
   open() {
     super.open();
 
-    this.disposer.add(listen(document.body, 'mousemove', (event: MouseEvent) => {
+    this.disposer.add(listen(window, 'mousemove', (event: MouseEvent) => {
       this.handleMouseMove(event);
     }));
-    this.disposer.add(listen(document.body, 'mousedown', () => {
+    this.disposer.add(listen(window, 'mousedown', () => {
       this.handleMouseDown();
     }));
     this.disposer.add(listen(window, 'mousewheel', (event: Event) => {
@@ -78,8 +78,7 @@ export class DistanceTool extends Tool {
     if (!coordinates) {
       return;
     }
-
-    coordinates.top += window.pageYOffset;
+    
     coordinates.left += window.pageXOffset;
 
     this.crosshairs.style.left = coordinates.left + myOffset.left + 'px';
