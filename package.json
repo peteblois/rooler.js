@@ -11,7 +11,8 @@
     "extension-files": "copyfiles -u 2 src/extension/* src/extension/_locales/en/* built/extension",
     "extension": "npm run extension-files && npm run extension-code",
     "clean": "rimraf built",
-    "build": "npm run clean && npm run extension && npm run demo"
+    "build": "npm run clean && npm run extension && npm run demo && npm run package",
+    "package": "pushd built/extension/ && zip -r extension.zip ."
   },
   "devDependencies": {
     "@rollup/plugin-image": "^2.0.5",

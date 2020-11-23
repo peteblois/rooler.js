@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_name__",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"manifest_version": 2,
 	"description": "__MSG_description__",
 	"default_locale": "en",
@@ -18,8 +18,7 @@
 	"permissions": [
 		"tabs",
 		"activeTab",
-		"http://*/*",
-		"https://*/*"
+		"<all_urls>"
 	],
 
 	"browser_action": {
