@@ -148,7 +148,7 @@ rooler.TabManager.prototype.getPageImage = function() {
 }
 
 rooler.TabManager.prototype.handleClose_ = function() {
-  window.rooler.background.removeTabManager(this);
+  self.rooler.background.removeTabManager(this);
 }
 
-window.rooler.background = new rooler.Background();
+self.rooler.background = new rooler.Background();
