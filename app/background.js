@@ -10,7 +10,7 @@ var rooler = rooler || {};
  * Handler for all background coordination across all tabs.
  */
 rooler.Background = function() {
-  chrome.extension.onConnect.addListener(this.handleConnect_.bind(this));
+  chrome.runtime.onConnect.addListener(this.handleConnect_.bind(this));
   this.tabManagers = [];
   this.pendingCommands = [];
 }
@@ -23,8 +23,8 @@ rooler.Background.prototype.startDistanceTool = function() {
     msg: 'startDistanceTool'
   };
   var that = this;
-  chrome.tabs.getSelected(null, function(tab) {
-    that.postCommand(command, tab);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    that.postCommand(command, tabs[0]);
   });
 }
 
@@ -36,8 +36,8 @@ rooler.Background.prototype.startBoundsTool = function() {
     msg: 'startBoundsTool'
   };
   var that = this;
-  chrome.tabs.getSelected(null, function(tab) {
-    that.postCommand(command, tab);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    that.postCommand(command, tabs[0]);
   });
 }
 
@@ -49,8 +49,8 @@ rooler.Background.prototype.startMagnifierTool = function() {
     msg: 'startMagnifierTool'
   };
   var that = this;
-  chrome.tabs.getSelected(null, function(tab) {
-    that.postCommand(command, tab);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    that.postCommand(command, tabs[0]);
   });
 }
 
@@ -62,8 +62,8 @@ rooler.Background.prototype.startLoupeTool = function() {
     msg: 'startLoupeTool'
   };
   var that = this;
-  chrome.tabs.getSelected(null, function(tab) {
-    that.postCommand(command, tab);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    that.postCommand(command, tabs[0]);
   });
 };
 
@@ -74,17 +74,14 @@ rooler.Background.prototype.postCommand = function(command, tab) {
   }
   else {
     this.pendingCommands[tab.id] = command;
-    chrome.tabs.executeScript(tab.id, { file: 'base.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'tool.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'distance.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'capture.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'bounds.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'loupe.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'magnifier.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'screencoordinates.js' } );
-    chrome.tabs.executeScript(tab.id, { file: 'screenshot.js' } );
-    chrome.tabs.insertCSS(tab.id, { file: 'rooler.css' } );
-    chrome.tabs.executeScript(tab.id, { file: 'rooler.js' } );
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ['base.js', 'tool.js', 'distance.js', 'capture.js', 'bounds.js', 'loupe.js', 'magnifier.js', 'screencoordinates.js', 'screenshot.js', 'rooler.js']
+    });
+    chrome.scripting.insertCSS({
+      target: { tabId: tab.id },
+      files: ['rooler.css']
+    });
   }
 }
 

@@ -17,22 +17,30 @@ rooler.Popup = function() {
 };
 
 rooler.Popup.prototype.openDistanceTool = function() {
-  chrome.extension.getBackgroundPage().rooler.background.startDistanceTool();
+  chrome.runtime.getBackgroundPage().then(function(backgroundPage) {
+    backgroundPage.rooler.background.startDistanceTool();
+  });
   window.close();
 };
 
 rooler.Popup.prototype.openBoundsTool = function() {
-  chrome.extension.getBackgroundPage().rooler.background.startBoundsTool();
+  chrome.runtime.getBackgroundPage().then(function(backgroundPage) {
+    backgroundPage.rooler.background.startBoundsTool();
+  });
   window.close();
 };
 
 rooler.Popup.prototype.openMagnifierTool = function() {
-  chrome.extension.getBackgroundPage().rooler.background.startMagnifierTool();
+  chrome.runtime.getBackgroundPage().then(function(backgroundPage) {
+    backgroundPage.rooler.background.startMagnifierTool();
+  });
   window.close();
 };
 
 rooler.Popup.prototype.openLoupeTool = function() {
-  chrome.extension.getBackgroundPage().rooler.background.startLoupeTool();
+  chrome.runtime.getBackgroundPage().then(function(backgroundPage) {
+    backgroundPage.rooler.background.startLoupeTool();
+  });
   window.close();
 };
 
