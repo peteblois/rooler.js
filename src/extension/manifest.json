@@ -1,12 +1,12 @@
 {
 	"name": "__MSG_name__",
 	"version": "0.0.8",
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"description": "__MSG_description__",
 	"default_locale": "en",
 
 	"background": {
-		"scripts": ["background.js"]
+		"service_worker": "background.js"
 	},
 
 	"icons": {
@@ -21,7 +21,7 @@
 		"<all_urls>"
 	],
 
-	"browser_action": {
+	"action": {
 		"default_icon": "icon.png",
 		"default_title": "rooler",
 		"default_popup": "popup.html"

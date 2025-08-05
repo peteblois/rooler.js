@@ -17,22 +17,22 @@ rooler.Popup = function() {
 };
 
 rooler.Popup.prototype.openDistanceTool = function() {
-  chrome.extension.getBackgroundPage().rooler.background.startDistanceTool();
+  chrome.runtime.sendMessage({action: 'startDistanceTool'});
   window.close();
 };
 
 rooler.Popup.prototype.openBoundsTool = function() {
-  chrome.extension.getBackgroundPage().rooler.background.startBoundsTool();
+  chrome.runtime.sendMessage({action: 'startBoundsTool'});
   window.close();
 };
 
 rooler.Popup.prototype.openMagnifierTool = function() {
-  chrome.extension.getBackgroundPage().rooler.background.startMagnifierTool();
+  chrome.runtime.sendMessage({action: 'startMagnifierTool'});
   window.close();
 };
 
 rooler.Popup.prototype.openLoupeTool = function() {
-  chrome.extension.getBackgroundPage().rooler.background.startLoupeTool();
+  chrome.runtime.sendMessage({action: 'startLoupeTool'});
   window.close();
 };
 

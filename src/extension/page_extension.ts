@@ -90,6 +90,6 @@ class Rooler {
   }
 }
 
-if (!(window as any).rooler && window.chrome && window.chrome.extension) {
+if (!(window as any).rooler && window.chrome && window.chrome.runtime) {
   (window as any).rooler = new Rooler();
 }

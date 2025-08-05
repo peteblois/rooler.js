@@ -10,9 +10,30 @@ var rooler = rooler || {};
  * Handler for all background coordination across all tabs.
  */
 rooler.Background = function() {
-  chrome.extension.onConnect.addListener(this.handleConnect_.bind(this));
+  chrome.runtime.onConnect.addListener(this.handleConnect_.bind(this));
+  chrome.runtime.onMessage.addListener(this.handleMessage_.bind(this));
   this.tabManagers = [];
   this.pendingCommands = [];
+}
+
+/**
+ * Handle messages from popup and other parts of the extension.
+ */
+rooler.Background.prototype.handleMessage_ = function(request, sender, sendResponse) {
+  switch(request.action) {
+    case 'startDistanceTool':
+      this.startDistanceTool();
+      break;
+    case 'startBoundsTool':
+      this.startBoundsTool();
+      break;
+    case 'startMagnifierTool':
+      this.startMagnifierTool();
+      break;
+    case 'startLoupeTool':
+      this.startLoupeTool();
+      break;
+  }
 }
 
 /**
@@ -23,8 +44,8 @@ rooler.Background.prototype.startDistanceTool = function() {
     msg: 'startDistanceTool'
   };
   var that = this;
-  chrome.tabs.getSelected(null, function(tab) {
-    that.postCommand(command, tab);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    that.postCommand(command, tabs[0]);
   });
 }
 
@@ -36,8 +57,8 @@ rooler.Background.prototype.startBoundsTool = function() {
     msg: 'startBoundsTool'
   };
   var that = this;
-  chrome.tabs.getSelected(null, function(tab) {
-    that.postCommand(command, tab);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    that.postCommand(command, tabs[0]);
   });
 }
 
@@ -49,8 +70,8 @@ rooler.Background.prototype.startMagnifierTool = function() {
     msg: 'startMagnifierTool'
   };
   var that = this;
-  chrome.tabs.getSelected(null, function(tab) {
-    that.postCommand(command, tab);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    that.postCommand(command, tabs[0]);
   });
 }
 
@@ -62,8 +83,8 @@ rooler.Background.prototype.startLoupeTool = function() {
     msg: 'startLoupeTool'
   };
   var that = this;
-  chrome.tabs.getSelected(null, function(tab) {
-    that.postCommand(command, tab);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    that.postCommand(command, tabs[0]);
   });
 };
 
