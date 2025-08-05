@@ -98,7 +98,7 @@
         tool = hash.slice(1);
       }
       var frame = document.getElementById('frame');
-      frame.contentWindow.location.hash = tool;
+      frame.contentWindow.postMessage({type: 'setTool', tool: tool}, '*');
 
       _gaq.push(['_trackPageview', '/rooler/' + tool]);
 

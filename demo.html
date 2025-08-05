@@ -166,6 +166,12 @@
     window.addEventListener('hashchange', function() {
       start();
     }, false);
+
+    window.addEventListener('message', function(event) {
+      if (event.data.type === 'setTool') {
+        window.location.hash = event.data.tool;
+      }
+    }, false);
     </script>
   </head>
   <body>
